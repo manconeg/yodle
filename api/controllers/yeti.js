@@ -57,10 +57,20 @@ function sendMandrill(email, people) {
   })
 }
 
+function invite(req, res, next) {
+  // create partial user entry
+  // user has no password
+  // user gets confirmation ID stored in account
+  // user gets confirmation email
+}
 
+function confirm(req, res, next) {
+  // User with confirmation ID is searched for
+  // If not found - return error
+  // if found - set user's password
+  //          - return user data
 
-
-
+}
 
 function mailingList(req, res, next) {
   var email = req.body.email
