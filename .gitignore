@@ -4,3 +4,4 @@ public/components
 .idea
 *.iml
 coverage
+npm-debug.log
