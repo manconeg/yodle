@@ -31,21 +31,9 @@ function mailingList(req, res, next) {
 
         client.contacts.list((r) => {
 
-          database.collection('mailingList').update(contact, contact, {
-            upsert: true
-          }, (err, result) => {
-            if(err) {
-              res.statusCode = 500;
-              res.send({
-                status: 500,
-                message: err
-              });
-            }
-
-            return res.send({
-              success: "did it",
-              count: r.body.total_count
-            });
+          return res.send({
+            success: "did it",
+            count: r.body.total_count
           });
 
         })
