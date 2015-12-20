@@ -24,27 +24,41 @@ function mailingList(req, res, next) {
   let contact = {
     email: req.body.email
   }
+
   client.contacts.listBy(contact, (r) => {
     if(r.body.total_count == 0) {
       client.contacts.create(contact, function (r) {
-        console.log(r.status);
-      });
-    }
-  });
 
-  database.collection('mailingList').update(contact, contact, {
-    upsert: true
-  }, (err, result) => {
-    if(err) {
-      res.statusCode = 500;
+        client.contacts.list((r) => {
+
+          database.collection('mailingList').update(contact, contact, {
+            upsert: true
+          }, (err, result) => {
+            if(err) {
+              res.statusCode = 500;
+              res.send({
+                status: 500,
+                message: err
+              });
+            }
+
+            return res.send({
+              success: "did it",
+              count: r.body.total_count
+            });
+          });
+
+        })
+
+      });
+
+    } else {
+      res.statusCode = 403
       res.send({
-        status: 500,
-        message: err
-      });
+        status: 403,
+        error: 4,
+        message: 'exists'
+      })
     }
-
-    return res.send({
-      success: "did it"
-    });
   });
 }
