@@ -8,7 +8,8 @@ var express = require('express'),
   SwaggerExpress = require('swagger-express-mw'),
   debug = require('debug')('yodle'),
   // tungus = require('tungus'),
-  mongoose = require('mongoose');
+  mongoose = require('mongoose'),
+  jwt = require('jsonwebtoken');
 
 // var yodle = require('../yodle').getInstance({
 //   project: '563d06b65135c011002ff49c',
@@ -40,39 +41,61 @@ models.forEach(function (model) {
 // ************************************************************************************
 
 function tokenHandler(token, callback) {
-  var jwt = require('jsonwebtoken');
   if (token) {
     jwt.verify(token, config.secret, function(err, decoded) {
       if (err) {
-        debug("failed authentication");
+        debug("Failed authentication");
         callback(new Error("Failed to authenticate token"), null);
       } else {
-        debug("authenticated as " + decoded);
+        debug("Authenticated as " + decoded);
         callback(null, decoded);
       }
     });
   } else {
-    debug("no token provided");
+    debug("No token provided");
     callback(new Error("No token provided"), null);
   }
 }
 
+var tokenlessRequestTypes = [
+  {
+    method: '*',
+    regex: /^\/users\/auth$/
+  },
+  {
+    method: '*',
+    regex: /^\/users$/
+  },
+  {
+    method: 'POST',
+    regex: /^\/projects\/[a-z0-9]{24}\/entries$/
+  }
+]
+
+function isTokenNeeded(request) {
+  var tokenNeeded = true
+
+  tokenlessRequestTypes.map((requestData) => {
+    if(requestData.method === '*' || requestData.method === request.method) {
+      if(request._parsedUrl.pathname.match(requestData.regex)) {
+        tokenNeeded = false
+      }
+    }
+  })
+  return tokenNeeded
+}
+
 function verifyTokenInHeader(request, securityDefinition, scopes, callback) {
-  var allowed = false;
-
-  if(request._parsedUrl.pathname.match(/^\/users\/auth$/) ||
-    request._parsedUrl.pathname.match(/^\/users$/)) allowed = true;
-
-  if(request.method == 'POST' && request._parsedUrl.pathname.match(/^\/projects\/[a-z0-9]{24}\/entries$/)) allowed = true;
-
-  if(allowed) {
+  if(!isTokenNeeded(request)) {
     return callback();
   }
 
-  tokenHandler(request.headers['x-access-token'], function(err, decoded) {
-    if(err) return callback(err)
-    request.decoded = decoded;
-    callback();
+  tokenHandler(request.headers['x-access-token'], (err, decoded) => {
+    if(err) {
+      return callback(err)
+    }
+    request.decoded = decoded
+    callback()
   });
 }
 
@@ -111,7 +134,7 @@ SwaggerExpress.create({
   app.use(swaggerExpress.runner.swaggerTools.swaggerUi());
 
   swaggerExpress.runner.config.swagger.securityHandlers = {
-  	'X-Access-Token': verifyTokenInHeader
+    'X-Access-Token': verifyTokenInHeader
   };
 
   // install middleware

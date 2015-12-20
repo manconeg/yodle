@@ -1,43 +1,52 @@
-module.exports = exports = function(object, directory) {
-	var glob = require('glob');
-	var commands = glob.sync(directory);
-	var debug = require('debug')('matcher');
+'use strict';
 
-	debug(__dirname + '/commands/*.js');
+var glob = require('glob')
+var debug = require('debug')('matcher')
 
-	object.prototype.commands = [];
+function parseForMatch(command, alias) {
+  var alias = '^\\s*' + alias
 
-	object.prototype.execute = function(command, callback) {
-		debug(command);
-		for(var i in this.commands) {
-			var commandCheck = this.commands[i];
+  alias += '(?![a-z])(\\s?\\(?([^(^)]+)\\)?)?'
 
-			for(var aliasI in commandCheck.alias) {
-				var alias = '^\\s*' + commandCheck.alias[aliasI];
+  var match = command.match(alias)
 
-				alias += '(?![a-z])(\\s?\\(?([^(^)]+)\\)?)?'
+  return match
+}
 
-				var match = command.match(alias);
+function executeCommand(command, callback) {
+  debug(command)
 
-				if(match) {
-          debug('matched');
-          debug(match);
-          debug('this[' + commandCheck.name + '](' + match[2] + ')');
+  for(var i in this.commands) {
+    var commandCheck = this.commands[i]
 
-					eval('this[commandCheck.name](' + match[2] + ')').then(callback, callback);
+    for(var aliasI in commandCheck.alias) {
+      var match = parseForMatch(command, commandCheck.alias[aliasI])
 
-					return true;
-				}
-			}
-		}
-		return false;
-	};
+      if(match) {
+        debug('matched')
+        debug(match)
+        debug('this[' + commandCheck.name + '](' + match[2] + ')')
 
-	commands.forEach(function (file) {
-		debug('scanned ' + file);
-		var command = require(file);
+        eval('this[commandCheck.name](' + match[2] + ')').then(callback, callback)
 
-		object.prototype.commands.push(command);
-	  	object.prototype[command.name] = command.execute;
-	});
-};
+        return true
+      }
+    }
+  }
+  return false
+}
+
+module.exports = exports = function(objectToExtend, functionsDirectory) {
+  let commands = glob.sync(functionsDirectory)
+
+  objectToExtend.prototype.commands = []
+  objectToExtend.prototype.execute = executeCommand
+
+  commands.forEach(function (file) {
+    debug('scanned ' + file)
+    var command = require(file)
+
+    objectToExtend.prototype.commands.push(command)
+    objectToExtend.prototype[command.name] = command.execute
+  })
+}
