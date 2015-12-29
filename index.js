@@ -27,6 +27,7 @@ Yodle.prototype.reconfig = require('./lib/commands/reconfig').execute;
 Yodle.prototype.count = require('./lib/commands/count').execute;
 Yodle.prototype.getLogs = require('./lib/commands/getLogs').execute;
 Yodle.prototype.getProjects = require('./lib/commands/getProjects').execute;
+Yodle.prototype.getProject = require('./lib/commands/getProject').execute;
 Yodle.prototype.getUsers = require('./lib/commands/getUsers').execute;
 Yodle.prototype.live = require('./lib/commands/live').execute;
 Yodle.prototype.log= require('./lib/commands/log').execute;
