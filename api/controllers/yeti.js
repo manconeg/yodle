@@ -8,8 +8,10 @@ var Db = require('mongodb').Db,
     MongoClient = require('mongodb').MongoClient,
     Server = require('mongodb').Server;
 
-var Intercom = require('intercom-client');
-var client = new Intercom.Client({ appId: process.env.INTERCOM_APP_ID, appApiKey: process.env.INTERCOM_API_KEY });
+if(process.env.INTERCOM_APP_ID && process.env.INTERCOM_API_KEY) {
+  var Intercom = require('intercom-client');
+  var client = new Intercom.Client({ appId: process.env.INTERCOM_APP_ID, appApiKey: process.env.INTERCOM_API_KEY });
+}
 
 var database;
 MongoClient.connect(process.env.DB, function(err, db) {
