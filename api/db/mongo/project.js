@@ -33,7 +33,7 @@ MongoDriver.getProjects = function(searchOptions) {
       }
     },
     {
-      $project: { _id: 1, name: 1, count: 1 }
+      $project: { _id: 1, name: 1, count: 1, users: 1 }
     }
   ];
 
