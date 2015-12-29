@@ -29,7 +29,8 @@ MongoDriver.getProjects = function(searchOptions) {
       $group: {
         _id: "$_id",
         name: { $first: '$name' },
-        count: { $sum: { $size: "$entries" } }
+        count: { $sum: { $size: "$entries" } },
+        users: { $first: '$users' }
       }
     },
     {
