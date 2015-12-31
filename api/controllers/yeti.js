@@ -152,10 +152,22 @@ function mailingList(req, res, next) {
 
       } else {
         sendMandrill(email).then(result => {
-          return res.send({
-            success: "did it",
-            count: count
-          })
+          switch(result[0].status) {
+            case 'rejected':
+              console.log(result[0]);
+
+              res.statusCode = 500
+              return res.send({
+                status: 500,
+                error: 100,
+                message: 'general unrecoverable'
+              })
+            default:
+              return res.send({
+                success: "did it",
+                count: count
+              })
+          }
         }, error => { // Error sending welcome email
           res.statusCode = 403
           return res.send({
