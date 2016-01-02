@@ -30,78 +30,27 @@ function sendMandrill(email) {
     "content": "example content"
   }]
 
-  var message = {
-    "html": "<p>Example HTML content</p>",
-    "text": "Example text content",
-    "subject": "example subject",
-    "from_email": "message.from_email@example.com",
-    "from_name": "Example Name",
-    "to": [{
-            "email": email,
-            "name": "Recipient Name",
-            "type": "to"
-        }],
-    "headers": {
-        "Reply-To": "message.reply@example.com"
-    },
-    "important": false,
-    "track_opens": null,
-    "track_clicks": null,
-    "auto_text": null,
-    "auto_html": null,
-    "inline_css": null,
-    "url_strip_qs": null,
-    "preserve_recipients": null,
-    "view_content_link": null,
-    "bcc_address": "message.bcc_address@example.com",
-    "tracking_domain": null,
-    "signing_domain": null,
-    "return_path_domain": null,
-    "merge": true,
-    "merge_language": "mailchimp",
-    "tags": [
-        "waitlist-welcome"
-    ]
-  }
+  var message = require('../../emails/welcome.json')
+
+  message.to = [{
+    "email": email,
+    "name": "Recipient Name",
+    "type": "to"
+  }]
   var async = false
 
   return new Promise((_resolve, _reject) => {
     mandrill_client.messages.sendTemplate({
-      "template_name": template_name,
-      "template_content": template_content,
-      "message": message,
-      "async": async
-    },
-    function(result) {
-          _resolve(result)
-          /*
-          {
-              "slug": "example-template",
-              "name": "Example Template",
-              "labels": [
-                  "example-label"
-              ],
-              "code": "<div mc:edit=\"editable\">editable content</div>",
-              "subject": "example subject",
-              "from_email": "from.email@example.com",
-              "from_name": "Example Name",
-              "text": "Example text",
-              "publish_name": "Example Template",
-              "publish_code": "<div mc:edit=\"editable\">different than draft content</div>",
-              "publish_subject": "example publish_subject",
-              "publish_from_email": "from.email.published@example.com",
-              "publish_from_name": "Example Published Name",
-              "publish_text": "Example published text",
-              "published_at": "2013-01-01 15:30:40",
-              "created_at": "2013-01-01 15:30:27",
-              "updated_at": "2013-01-01 15:30:49"
-          }
-          */
+        "template_name": template_name,
+        "template_content": template_content,
+        "message": message,
+        "async": async
+      },
+      function(result) {
+        _resolve(result)
       }, function(e) {
         _reject(e)
-          // Mandrill returns the error as an object with name and message keys
-          console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
-          // A mandrill error occurred: Invalid_Key - Invalid API key
+        console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
       }
     )
   })
