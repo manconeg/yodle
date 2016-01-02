@@ -74,7 +74,7 @@ MongoDriver.createProject = function(projectData) {
 
   project.users = projectData.users;
   project.entries = projectData.entries;
-  project.name = projectData.name;
+  project.name = projectData.name ? projectData.name : '';
 
   return new Promise((_resolve, _reject) => {
     project.save((err, data) => {

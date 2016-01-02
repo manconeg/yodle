@@ -8,7 +8,7 @@ var config = {
     app: {
       name: 'yodle'
     },
-    secret: 'nobodyknowsthis',
+    secret: process.env.TOKEN_SECRET,
     port: (process.env.PORT || 3000),
     //db: 'tingodb:///tmp/yodle'
     DB: (process.env.DB || 'mongodb://localhost/yodle-development')
@@ -19,7 +19,7 @@ var config = {
     app: {
       name: 'yodle'
     },
-    secret: 'nobodyknowsthis',
+    secret: process.env.TOKEN_SECRET,
     port: (process.env.PORT || 3000),
     DB: process.env.MONGOLAB_URI
   },
@@ -29,8 +29,8 @@ var config = {
     app: {
       name: 'yodle'
     },
-    secret: 'nobodyknowsthis',
-    port: 3000,
+    secret: process.env.TOKEN_SECRET,
+    port: (process.env.PORT || 3000),
     DB: 'mongodb://localhost/yodle-test'
   },
 
@@ -39,9 +39,9 @@ var config = {
     app: {
       name: 'yodle'
     },
-    secret: 'nobodyknowsthis',
-    port: 3000,
-    DB: 'mongodb://localhost/yodle-production'
+    secret: process.env.TOKEN_SECRET,
+    port: (process.env.PORT || 3000),,
+    DB: process.env.MONGOLAB_URI
   }
 };
 
