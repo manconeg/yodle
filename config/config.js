@@ -40,7 +40,7 @@ var config = {
       name: 'yodle'
     },
     secret: process.env.TOKEN_SECRET,
-    port: (process.env.PORT || 3000),,
+    port: (process.env.PORT || 3000),
     DB: process.env.MONGOLAB_URI
   }
 };
