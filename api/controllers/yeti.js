@@ -23,7 +23,7 @@ module.exports = {
 
 
 
-function sendMandrill(email) {
+function sendMandrill(email, people) {
   var template_name = "You joined the waitlist"
   var template_content = [{
     "name": "example name",
@@ -37,6 +37,7 @@ function sendMandrill(email) {
     "name": "Recipient Name",
     "type": "to"
   }]
+  message.merge_vars.people = people
   var async = false
 
   return new Promise((_resolve, _reject) => {
@@ -64,7 +65,7 @@ function sendMandrill(email) {
 function mailingList(req, res, next) {
   var email = req.body.email
 
-  var count = 0
+  var count = 1
   mc.call('lists', 'list', {
     filters: {
       list_id: '555aea8b9b'
@@ -72,7 +73,6 @@ function mailingList(req, res, next) {
   }, (error, data) => {
     count = data.data[0].stats.member_count + 1
   })
-
 
   mc.call('lists', 'subscribe', {
       id: '555aea8b9b',
@@ -100,7 +100,7 @@ function mailingList(req, res, next) {
         }
 
       } else {
-        sendMandrill(email).then(result => {
+        sendMandrill(email, count - 1).then(result => {
           switch(result[0].status) {
             case 'rejected':
               console.log(result[0]);
