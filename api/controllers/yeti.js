@@ -72,59 +72,59 @@ function mailingList(req, res, next) {
     }
   }, (error, data) => {
     count = data.data[0].stats.member_count + 1
-  })
 
-  mc.call('lists', 'subscribe', {
-      id: '555aea8b9b',
-      double_optin: false,
-      email: {
-        email: email
-      }
-    }, (error, data) => { // Success
-      if(error) {
-        switch(error.code) {
-          case 214:
-            res.statusCode = 403
-            return res.send({
-              status: 403,
-              error: 4,
-              message: 'exists'
-            })
-          default:
-            res.statusCode = 500
-            return res.send({
-              status: 500,
-              error: 100,
-              message: 'general unrecoverable'
-            })
+    mc.call('lists', 'subscribe', {
+        id: '555aea8b9b',
+        double_optin: false,
+        email: {
+          email: email
         }
-
-      } else {
-        sendMandrill(email, count - 1).then(result => {
-          switch(result[0].status) {
-            case 'rejected':
-              console.log(result[0]);
-
+      }, (error, data) => { // Success
+        if(error) {
+          switch(error.code) {
+            case 214:
+              res.statusCode = 403
+              return res.send({
+                status: 403,
+                error: 4,
+                message: 'exists'
+              })
+            default:
               res.statusCode = 500
               return res.send({
                 status: 500,
                 error: 100,
                 message: 'general unrecoverable'
               })
-            default:
-              return res.send({
-                success: "did it",
-                count: count
-              })
           }
-        }, error => { // Error sending welcome email
-          res.statusCode = 403
-          return res.send({
-            status: 403,
-            error: 100,
-            message: 'general unrecoverable'
+
+        } else {
+          sendMandrill(email, count - 1).then(result => {
+            switch(result[0].status) {
+              case 'rejected':
+                console.log(result[0]);
+
+                res.statusCode = 500
+                return res.send({
+                  status: 500,
+                  error: 100,
+                  message: 'general unrecoverable'
+                })
+              default:
+                return res.send({
+                  success: "did it",
+                  count: count
+                })
+            }
+          }, error => { // Error sending welcome email
+            res.statusCode = 403
+            return res.send({
+              status: 403,
+              error: 100,
+              message: 'general unrecoverable'
+            })
           })
-        })
-      }
-  });
+        }
+    })
+  })
 }
