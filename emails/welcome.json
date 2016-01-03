@@ -24,15 +24,10 @@
     "tags": [
         "waitlist-welcome"
     ],
-    "merge_vars": [
+    "global_merge_vars": [
         {
-            "vars" : [
-                {
-                    "name": "people",
-                    "content": "10,000"
-                }
-
-            ]
+            "name": "PEOPLE",
+            "content": "10,000"
         }
     ]
 }
