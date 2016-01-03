@@ -24,10 +24,9 @@
     "tags": [
         "waitlist-welcome"
     ],
-    "vars": [
+    "merge_vars": [
         {
-            "CURRENT_YEAR": "2015",
-            "COMPANY" : "Yeti"
+            "people": "10,000"
         }
     ]
 }
