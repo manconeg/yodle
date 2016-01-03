@@ -37,7 +37,7 @@ function sendMandrill(email, people) {
     "name": "Recipient Name",
     "type": "to"
   }]
-  message.merge_vars.people = people
+  message.merge_vars[0].vars[0].count = people
   var async = false
 
   return new Promise((_resolve, _reject) => {
