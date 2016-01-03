@@ -1,12 +1,11 @@
 {
-    "html": "<p>Example HTML content</p>",
-    "text": "Example text content",
-    "subject": "example subject",
-    "from_email": "no.reply@yetilogs.com",
-    "from_name": "Example Name",
+    "text": "Thank you for signing up for Yeti! We hope you're as excited as we are.",
+    "subject": "Welcome to Yeti",
+    "from_email": "noreply@yetilogs.com",
+    "from_name": "The Team at Yeti",
     "to": [],
     "headers": {
-        "Reply-To": "no.reply@yetilogs.com"
+        "Reply-To": "noreply@yetilogs.com"
     },
     "important": false,
     "track_opens": null,
@@ -24,5 +23,11 @@
     "merge_language": "mailchimp",
     "tags": [
         "waitlist-welcome"
+    ],
+    "vars": [
+        {
+            "CURRENT_YEAR": "2015",
+            "COMPANY" : "Yeti"
+        }
     ]
 }
