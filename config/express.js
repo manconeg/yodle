@@ -32,7 +32,6 @@ module.exports = function(app, config) {
   app.post('/mailing-list', yeti.mailingList);
 
   app.use(function (req, res, next) {
-    console.log(req);
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
