@@ -105,7 +105,8 @@ function verifyTokenInHeader(request, securityDefinition, scopes, callback) {
 
 SwaggerExpress.create({
   appRoot: __dirname
-}, function(err, swaggerExpress) {console.log(err);
+}, function(err, swaggerExpress) {
+  console.log("******************************************************************");
   if (err) { throw err; }
 
   app.use(function(req, res, next) {
