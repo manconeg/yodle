@@ -106,7 +106,7 @@ function verifyTokenInHeader(request, securityDefinition, scopes, callback) {
 SwaggerExpress.create({
   appRoot: __dirname
 }, function(err, swaggerExpress) {
-  console.log("******************************************************************");
+  console.log("******************************************************************start");
   if (err) { throw err; }
 
   app.use(function(req, res, next) {
@@ -128,7 +128,7 @@ SwaggerExpress.create({
       });
       return;
     }
-
+console.log("******************************************************************mid");
     return next();
   });
 
@@ -145,7 +145,11 @@ SwaggerExpress.create({
   app.use(swaggerExpress.expressCompatibilityMW());
   app.use(swaggerExpress.router());
 
+<<<<<<< HEAD
   require('./config/express')(app, config);
+=======
+  console.log("******************************************************************end");
+>>>>>>> more debugging
 });
 
 
