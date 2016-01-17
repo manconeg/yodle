@@ -119,7 +119,7 @@ SwaggerExpress.create({
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, PUT, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Access-Token, Location');
     res.setHeader('Access-Control-Allow-Credentials', true);
-
+console.log("******************************************************************dublemid");
     if(req.method === "OPTIONS") {
       res.statusCode = 200;
       res.send({
