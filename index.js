@@ -8,7 +8,7 @@ class Yodle {
     var apiConfig = {
       server: config && config.server ? config.server : 'yodle.yetilogs.com',
       port: config && config.port ? config.port : 80,
-      protocol: config && config.protocol ? config.protocol : 'https',
+      protocol: config && config.protocol ? config.protocol : 'https:',
       token: config ? config.token : ''
     };
 
