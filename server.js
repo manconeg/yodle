@@ -106,7 +106,6 @@ function verifyTokenInHeader(request, securityDefinition, scopes, callback) {
 SwaggerExpress.create({
   appRoot: __dirname
 }, function(err, swaggerExpress) {
-  console.log("******************************************************************start");
   if (err) { throw err; }
 
   app.use(function(req, res, next) {
@@ -119,7 +118,7 @@ SwaggerExpress.create({
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, PUT, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Access-Token, Location');
     res.setHeader('Access-Control-Allow-Credentials', true);
-console.log("******************************************************************dublemid");
+
     if(req.method === "OPTIONS") {
       res.statusCode = 200;
       res.send({
@@ -128,7 +127,7 @@ console.log("******************************************************************d
       });
       return;
     }
-console.log("******************************************************************mid");
+
     return next();
   });
 
@@ -146,8 +145,6 @@ console.log("******************************************************************m
   app.use(swaggerExpress.router());
 
   require('./config/express')(app, config);
-
-  console.log("******************************************************************end");
 });
 
 
