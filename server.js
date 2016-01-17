@@ -145,10 +145,11 @@ console.log("******************************************************************m
   app.use(swaggerExpress.expressCompatibilityMW());
   app.use(swaggerExpress.router());
 
+  require('./config/express')(app, config);
+
   console.log("******************************************************************end");
 });
 
-require('./config/express')(app, config);
 
 // ************************************************************************************
 // Configure auth driver
