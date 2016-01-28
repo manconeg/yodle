@@ -15,8 +15,7 @@ module.exports = {
 
 function getProjects(req, res, next) {
   mongoDriver.getProjects({
-    user: req.decoded.email,
-    name: req.swagger.params.search.value,
+    user: req.user._id
   }).then((projects) => {
     res.send(projects);
   }, (err) => {
@@ -28,7 +27,7 @@ function getProjectTags(req, res, next) {
   var project = req.swagger.params.projectId.value;
 
   var searchOptions = {
-    user: req.decoded.email,
+    user: req.user._id,
     metaOnly: false
   };
 
@@ -48,7 +47,7 @@ function getProject(req, res, next) {
   var project = req.swagger.params.projectId.value;
 
   mongoDriver.getProject(project, {
-    user: req.decoded.email
+    user: req.user._id
   }).then((project) => {
     res.send(project);
   }, () => {
@@ -67,7 +66,7 @@ function createProject(req, res, next) {
   project.entries = req.swagger.params.project.value.entries ? req.swagger.params.project.value.entries : [];
   project.name = req.swagger.params.project.value.name;
 
-  if(project.users.indexOf(req.decoded.email) === -1) project.users.push(req.decoded.email);
+  if(project.users.indexOf(req.user._id) === -1) project.users.push(req.user._id);
 
   mongoDriver.createProject(project).then((project) => {
     res.statusCode = 200;
@@ -88,7 +87,7 @@ function getProjectEntries(req, res, next) {
 
   var query = {};
   var searchOptions = {
-    user: req.decoded.email,
+    user: req.user._id,
     metaOnly: false
   };
   for(var i in req.query) {
@@ -115,7 +114,7 @@ function getProjectUsers (req, res, next) {
   var project = req.swagger.params.projectId.value;
 
   mongoDriver.getProjectUsers(project, {
-    user: req.decoded.email
+    user: req.user._id
   }).then((users) => {
     res.send(users);
   }, () => {
@@ -130,7 +129,7 @@ function getProjectUsers (req, res, next) {
 function addProjectUser(req, res, next) {
   var project = req.swagger.params.projectId.value;
   var searchOptions = {
-    user: req.decoded.email
+    user: req.user._id
   };
   var user = req.swagger.params.user.value.email;
 
@@ -152,7 +151,7 @@ function addProjectUser(req, res, next) {
 function removeProjectUser(req, res, next) {
   var project = req.swagger.params.projectId.value;
   var searchOptions = {
-    user: req.decoded.email
+    user: req.user._id
   };
   var user = req.swagger.params.user.value;
 
@@ -177,7 +176,7 @@ function getProjectEntry(req, res, next) {
 
 
   mongoDriver.getProjectEntry(project, {
-    user: req.decoded.email
+    user: req.user._id
   }).then((entries) => {
     entries.forEach((subEntry) => {
       if(subEntry._id == entry) {
