@@ -41,7 +41,6 @@ MongoDriver.getProjects = function(searchOptions) {
   return new Promise((_resolve, _reject) => {
     var cursor = database.collection('projects').aggregate(aggregate, (err, result) => {
       if(err) return _reject(err);
-
       _resolve(result);
     });
   });

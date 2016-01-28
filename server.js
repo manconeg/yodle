@@ -90,11 +90,11 @@ function verifyTokenInHeader(request, securityDefinition, scopes, callback) {
     return callback();
   }
 
-  tokenHandler(request.headers['x-access-token'], (err, decoded) => {
+  tokenHandler(request.headers['x-access-token'], (err, user) => {
     if(err) {
       return callback(err)
     }
-    request.decoded = decoded
+    request.user = user
     callback()
   });
 }
