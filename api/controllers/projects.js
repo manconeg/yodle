@@ -14,7 +14,7 @@ module.exports = {
 };
 
 function getProjects(req, res, next) {
-  console.log(req.user);
+  console.log(req.user._id);
   mongoDriver.getProjects({
     user: req.user._id
   }).then((projects) => {
