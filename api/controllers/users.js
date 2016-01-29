@@ -11,7 +11,7 @@ module.exports = {
 function auth(req, res) {
   global.authDriver.auth(req.swagger.params.credentials.value.email, req.swagger.params.credentials.value.password).then(
     (user) => {
-      var token = jwt.sign(user.toJSON(), global.secret, {
+      var token = jwt.sign(user.toObject(), global.secret, {
         expiresIn: 1440 * 60
       });
       res.send({
