@@ -91,6 +91,9 @@ function verifyTokenInHeader(request, securityDefinition, scopes, callback) {
   }
 
   tokenHandler(request.headers['x-access-token'], (err, user) => {
+    console.log("yo");
+    console.log(user);
+    console.log("yizzle");
     if(err) {
       return callback(err)
     }
