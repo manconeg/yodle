@@ -35,7 +35,7 @@ function listUsers(req, res) {
 function getUser(req, res) {
   var userId = req.swagger.params.userId.value;
 
-  var realUserId = userId === 'me' ? req.decoded._id : userId;
+  var realUserId = userId === 'me' ? req.user._id : userId;
 
   global.authDriver.getUser(realUserId).then((user) => {
     res.send(user);
@@ -75,19 +75,19 @@ function createUser(req, res) {
 function editUser(req, res) {
   var userId = req.swagger.params.userId.value;
 
-  var realUserId = userId === 'me' ? req.decoded._id : userId;
+  var realUserId = userId === 'me' ? req.user._id : userId;
 
   var data = {};
   if(req.swagger.params.user.value.email) data.email = req.swagger.params.user.value.email;
   if(req.swagger.params.user.value.password) data.password = req.swagger.params.user.value.password;
 
-  if(data.email === req.decoded.email) {
+  if(data.email === req.user.email) {
     res.send({
       message: 'email is unchanged'
     });
     return;
   }
-  if(data.password === req.decoded.password) {
+  if(data.password === req.user.password) {
     res.send({
       message: 'password is unchanged'
     });
